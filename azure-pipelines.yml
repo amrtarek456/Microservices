@@ -1,19 +1,33 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
+stages:
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- stage: Docker
+  dependsOn: []
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+  displayName: 'Docker Stage'
+  jobs:
+  - job: Build_Push_Docker_Image
+    displayName: 'Build and Push Docker Image'
+    pool:
+      name: 'Default'
+    steps:
+    - task: Docker@2
+      displayName: 'Build Docker Image'
+      inputs:
+        command: 'build'
+        repository: 'azuredevops-431108/dockerregistry/microservice'
+        dockerfile: Dockerfile
+        containerRegistry: 'gcr'
+        arguments: '--no-cache'
+        tags: |
+          latest
+    - task: Docker@2
+      displayName: 'Push Docker Image'
+      inputs:
+        command: 'push'
+        repository: 'azuredevops-431108/dockerregistry/microservice'
+        containerRegistry: 'gcr'
+        tags: |
+          latest
