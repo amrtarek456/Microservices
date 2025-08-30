@@ -1,4 +1,4 @@
-project_id = "YOUR_GCP_PROJECT_ID"
+project_id = "prj-mon-test-iac"
 region     = "me-central2"
 zone       = "me-central2-a"
 
