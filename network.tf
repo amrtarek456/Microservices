@@ -70,9 +70,9 @@ resource "google_compute_router_nat" "nat" {
 }
 
 resource "google_compute_firewall" "allow_internal" {
-  name    = "${var.network_name}-allow-internal"
-  network = google_compute_network.vpc.name
-  direction     = "INGRESS"
+  name      = "${var.network_name}-allow-internal"
+  network   = google_compute_network.vpc.name
+  direction = "INGRESS"
   source_ranges = [
     var.mgmt_subnet_cidr,
     var.gke_subnet_cidr,
@@ -93,4 +93,28 @@ resource "google_compute_firewall" "allow_internal" {
   }
 }
 
-resource "google_compute_firewall" "iap_to_bastion_s_
+resource "google_compute_firewall" "iap_to_bastion_ssh" {
+  name          = "${var.network_name}-iap-to-bastion-ssh"
+  network       = google_compute_network.vpc.name
+  direction     = "INGRESS"
+  source_ranges = ["35.235.240.0/20"]
+  target_tags   = ["bastion"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+}
+
+resource "google_compute_firewall" "master_to_nodes" {
+  name          = "${var.network_name}-master-to-nodes"
+  network       = google_compute_network.vpc.name
+  direction     = "INGRESS"
+  source_ranges = [var.master_ipv4_cidr]
+  target_tags   = ["gke-node"]
+
+  allow {
+    protocol = "tcp"
+    ports    = ["443", "10250", "10257", "10259", "30000-32767"]
+  }
+}
