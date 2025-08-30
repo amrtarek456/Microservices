@@ -7,7 +7,9 @@ resource "google_container_cluster" "cluster" {
   initial_node_count       = 1
   deletion_protection      = false
 
-  release_channel { channel = "REGULAR" }
+  release_channel {
+    channel = "REGULAR"
+  }
 
   networking_mode = "VPC_NATIVE"
 
@@ -23,32 +25,13 @@ resource "google_container_cluster" "cluster" {
   }
 
   master_auth {
-    client_certificate_config { issue_client_certificate = false }
+    client_certificate_config {
+      issue_client_certificate = false
+    }
   }
 
   depends_on = [
     google_compute_subnetwork.gke,
     google_compute_router_nat.nat
   ]
-}
-
-resource "google_container_node_pool" "primary" {
-  name       = "${var.cluster_name}-np"
-  location   = google_container_cluster.cluster.location
-  cluster    = google_container_cluster.cluster.name
-  node_count = var.node_count
-
-  node_config {
-    machine_type    = var.machine_type
-    preemptible     = var.preemptible
-    service_account = google_service_account.gke_nodes.email
-    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
-    tags            = ["gke-node"]
-    metadata        = { disable-legacy-endpoints = "true" }
-  }
-
-  management {
-    auto_repair  = true
-    auto_upgrade = true
-  }
 }
