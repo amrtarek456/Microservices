@@ -1,3 +1,12 @@
+locals {
+  iap_members_normalized = [
+    for m in var.iap_members :
+    (startswith(m, "user:") || startswith(m, "group:") || startswith(m, "serviceAccount:"))
+    ? m
+    : "user:${m}"
+  ]
+}
+
 resource "google_service_account" "gke_nodes" {
   account_id   = "gke-nodes"
   display_name = "GKE nodes service account"
@@ -18,22 +27,22 @@ resource "google_project_iam_member" "node_sa_roles" {
 }
 
 resource "google_project_iam_member" "iap_tunnel" {
-  for_each = toset(var.iap_members)
+  for_each = toset(local.iap_members_normalized)
   project  = var.project_id
   role     = "roles/iap.tunnelResourceAccessor"
   member   = each.value
 }
 
 resource "google_project_iam_member" "oslogin_admin" {
-  count   = var.oslogin_admin ? length(var.iap_members) : 0
-  project = var.project_id
-  role    = "roles/compute.osAdminLogin"
-  member  = element(var.iap_members, count.index)
+  for_each = var.oslogin_admin ? toset(local.iap_members_normalized) : toset([])
+  project  = var.project_id
+  role     = "roles/compute.osAdminLogin"
+  member   = each.value
 }
 
 resource "google_project_iam_member" "oslogin_user" {
-  count   = var.oslogin_admin ? 0 : length(var.iap_members)
-  project = var.project_id
-  role    = "roles/compute.osLogin"
-  member  = element(var.iap_members, count.index)
+  for_each = var.oslogin_admin ? toset([]) : toset(local.iap_members_normalized)
+  project  = var.project_id
+  role     = "roles/compute.osLogin"
+  member   = each.value
 }

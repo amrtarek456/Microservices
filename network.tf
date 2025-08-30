@@ -6,8 +6,9 @@ resource "google_project_service" "enable_apis" {
     "artifactregistry.googleapis.com",
     "iap.googleapis.com"
   ])
-  project = var.project_id
-  service = each.value
+  project            = var.project_id
+  service            = each.value
+  disable_on_destroy = false
 }
 
 resource "google_compute_network" "vpc" {
@@ -80,17 +81,9 @@ resource "google_compute_firewall" "allow_internal" {
     var.services_secondary_cidr
   ]
 
-  allow {
-    protocol = "tcp"
-  }
-
-  allow {
-    protocol = "udp"
-  }
-
-  allow {
-    protocol = "icmp"
-  }
+  allow { protocol = "tcp" }
+  allow { protocol = "udp" }
+  allow { protocol = "icmp" }
 }
 
 resource "google_compute_firewall" "iap_to_bastion_ssh" {

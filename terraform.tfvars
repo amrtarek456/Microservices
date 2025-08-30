@@ -1,6 +1,7 @@
 project_id = "prj-mon-test-iac"
-region     = "me-central2"
-zone       = "me-central2-a"
+
+region = "me-central2"
+zone   = "me-central2-a"
 
 cluster_name = "demo-gke-private"
 machine_type = "e2-small"
@@ -20,7 +21,8 @@ services_secondary_cidr = "10.50.0.0/20"
 
 master_ipv4_cidr = "172.16.0.0/28"
 
+# Use your real identities or leave empty to skip IAM bindings
 iap_members = [
-  "user:you@example.com"
+  "a.elboray.c@ncnp.gov.sa"
 ]
 oslogin_admin = true

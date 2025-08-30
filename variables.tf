@@ -83,13 +83,13 @@ variable "bastion_machine_type" {
 }
 
 variable "iap_members" {
-  description = "Principals to grant IAP + OS Login, e.g. ['user:you@example.com']"
+  description = "Principals for IAP + OS Login (e.g., ['user:you@example.com'] or ['you@example.com'])."
   type        = list(string)
   default     = []
 }
 
 variable "oslogin_admin" {
-  description = "Grant OS Admin Login (sudo) instead of OS Login (non-sudo)"
+  description = "Grant OS Admin Login (sudo) instead of OS Login (non-sudo)."
   type        = bool
   default     = true
 }

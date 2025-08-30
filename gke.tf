@@ -13,6 +13,9 @@ resource "google_container_cluster" "cluster" {
 
   networking_mode = "VPC_NATIVE"
 
+  # Pin nodes to a single zone so a regional cluster doesn't create 1-per-zone
+  node_locations = [var.zone]
+
   ip_allocation_policy {
     cluster_secondary_range_name  = "${var.gke_subnet_name}-pods"
     services_secondary_range_name = "${var.gke_subnet_name}-services"
@@ -22,6 +25,13 @@ resource "google_container_cluster" "cluster" {
     enable_private_nodes    = true
     enable_private_endpoint = true
     master_ipv4_cidr_block  = var.master_ipv4_cidr
+  }
+
+  master_authorized_networks_config {
+    cidr_blocks {
+      cidr_block   = var.mgmt_subnet_cidr
+      display_name = "mgmt-subnet"
+    }
   }
 
   master_auth {
@@ -34,4 +44,25 @@ resource "google_container_cluster" "cluster" {
     google_compute_subnetwork.gke,
     google_compute_router_nat.nat
   ]
+}
+
+resource "google_container_node_pool" "primary" {
+  name       = "${var.cluster_name}-np"
+  location   = google_container_cluster.cluster.location
+  cluster    = google_container_cluster.cluster.name
+  node_count = var.node_count
+
+  node_config {
+    machine_type    = var.machine_type
+    preemptible     = var.preemptible
+    service_account = google_service_account.gke_nodes.email
+    oauth_scopes    = ["https://www.googleapis.com/auth/cloud-platform"]
+    tags            = ["gke-node"]
+    metadata        = { disable-legacy-endpoints = "true" }
+  }
+
+  management {
+    auto_repair  = true
+    auto_upgrade = true
+  }
 }
