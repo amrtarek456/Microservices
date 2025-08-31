@@ -15,7 +15,9 @@ stages:
   - job: Build_Push_Docker_Image
     displayName: 'Build and Push Docker Image'
     pool:
-      name: 'Default'
+      name: 'oci-docker'
+      demands:
+        - agent.name -equals azure-agent
     steps:
     - task: Docker@2
       displayName: 'Build Docker Image'
