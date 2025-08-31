@@ -63,9 +63,7 @@ stages:
         kubernetesServiceConnection: 'gke'
         namespace: 'microservice'
         manifests: |
-          k8s/namespace.yaml
-          k8s/deployment.yaml
-          k8s/service.yaml
+          k8s/*.yaml
         containers: |
           $(imageName):$(Build.BuildId)
         rolloutStatusTimeout: '150'
