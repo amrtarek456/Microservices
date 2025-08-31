@@ -4,7 +4,7 @@ region = "me-central2"
 zone   = "me-central2-a"
 
 cluster_name = "demo-gke-private"
-machine_type = "e2-small"
+machine_type = "e2-medium"
 node_count   = 2
 preemptible  = false
 
