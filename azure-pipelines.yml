@@ -63,3 +63,4 @@ stages:
           k8s/service.yaml
         containers: |
           $(imageName):$(Build.BuildId)
+        rolloutStatusTimeout: '150'
