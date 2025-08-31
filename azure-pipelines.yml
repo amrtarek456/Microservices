@@ -44,7 +44,9 @@ stages:
   - job: Apply_Manifests
     displayName: 'kubectl apply'
     pool:
-      name: 'Default'
+      name: 'oci-docker'
+      demands:
+        - agent.name -equals gke-bastion
     steps:
     - checkout: self
     - task: KubernetesManifest@1
