@@ -8,12 +8,12 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /health
 spec:
   rules:
-  - http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: microservice
-            port:
-              number: 80
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: microservice
+                port:
+                  number: 80
