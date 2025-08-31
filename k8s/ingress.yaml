@@ -3,21 +3,19 @@ kind: Ingress
 metadata:
   name: microservice
   namespace: microservice
-  annotations:
-    nginx.ingress.kubernetes.io/app-root: /health
 spec:
   ingressClassName: nginx
   rules:
   - http:
       paths:
-      - path: /
+      - path: /products
         pathType: Prefix
         backend:
           service:
             name: microservice
             port:
               number: 80
-      - path: /health
+      - path: /users
         pathType: Prefix
         backend:
           service:
