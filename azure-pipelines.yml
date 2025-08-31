@@ -37,11 +37,9 @@ stages:
         containerRegistry: 'gcr'
         tags: |
           $(Build.BuildId)
-    - bash: |
-        REPO='$(repoPath)'
-        echo "Deleting all local images for repo: $REPO"
-        docker images "$REPO" -q | xargs -r docker rmi -f
-      displayName: 'Delete all local images for this repo'
+    - script: |
+        docker system prune -a -f
+      displayName: 'Clean up docker images'
 
 - stage: Deploy
   dependsOn: Docker
