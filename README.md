@@ -42,7 +42,6 @@ terraform validate
 terraform plan
 terraform apply -var-file=terraform.tfvars
 ```
-![Terraform Apply](images/terraform-apply.png)
 
 ---
 
@@ -52,8 +51,6 @@ SSH to the **bastion VM** and verify the cluster nodes:
 ```bash
 kubectl get nodes
 ```
-![kubectl get nodes](images/kubectl-get-nodes.png)
-
 ---
 
 ### 6) Install Azure DevOps Self‑Hosted Agent (on the bastion)
@@ -86,7 +83,6 @@ The **`main`** branch contains:
 
 ### 8) Create Google Container Registry (GCR)
 Create a **GCR** repository to push Docker images from the pipeline.  
-![GCR](images/gcr.png)
 
 ---
 
@@ -108,7 +104,6 @@ helm repo update
 helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx
 kubectl -n ingress-nginx get svc ingress-nginx-controller
 ```
-![NGINX Ingress](images/nginx-ingress.png)
 
 ---
 
@@ -143,7 +138,6 @@ grafana:
     pathType: Prefix
   grafana.ini:
     server:
-      # Replace with your ingress IP/host if different
       root_url: "http://34.166.167.239/grafana"
       serve_from_sub_path: true
 
@@ -181,7 +175,6 @@ helm repo update
 helm install kps prometheus-community/kube-prometheus-stack \
   -n monitoring -f kps-values.yaml
 ```
-![Prometheus Grafana Install](images/kps-install.png)
 
 ---
 
@@ -226,34 +219,4 @@ flowchart LR
 
 ![Architecture Diagram](images/architecture.png)
 
----
 
-## 🗂️ Suggested Repo Structure
-
-```
-.
-├─ k8s/
-│  └─ (manifests.yaml)
-├─ terraform/
-│  └─ (main.tf, variables.tf, terraform.tfvars, etc.)
-├─ images/
-│  ├─ fork.png
-│  ├─ terraform-branch.png
-│  ├─ gcp-service-account.png
-│  ├─ terraform-apply.png
-│  ├─ kubectl-get-nodes.png
-│  ├─ ado-agent.png
-│  ├─ main-branch.png
-│  ├─ gcr.png
-│  ├─ ado-service-connections.png
-│  ├─ nginx-ingress.png
-│  ├─ ado-pipeline.png
-│  ├─ app-endpoints.png
-│  ├─ kps-install.png
-│  ├─ grafana-login.png
-│  └─ architecture.png
-├─ Dockerfile
-├─ azure-pipelines.yml
-├─ kps-values.yaml
-└─ README.md
-```
