@@ -1,0 +1,5 @@
+*.json
+!.gitignore
+*.exe
+!.vscode
+!.terraform
