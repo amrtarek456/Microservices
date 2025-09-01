@@ -8,7 +8,7 @@ This repository demonstrates how to provision a **Google Kubernetes Engine (GKE)
 
 ### 1) Fork the Repository
 Fork this repository into your own GitHub account to start customizing it.  
-![Fork Repository](images/fork.png)
+![Fork Repository](images/fork.PNG)
 
 ---
 
@@ -18,7 +18,7 @@ Create a new branch named `terraform` that will contain all Terraform files.
 ```bash
 git checkout -b terraform
 ```
-![Terraform Branch](images/terraform-branch.png)
+![Terraform Branch](images/terraform-branch.PNG)
 
 ---
 
@@ -28,7 +28,7 @@ Create a **Service Account** in Google Cloud and generate a **JSON key** so Terr
 > ```bash
 > export GOOGLE_APPLICATION_CREDENTIALS="/path/to/key.json"
 > ```
-![GCP Service Account](images/gcp-service-account.png)
+![GCP Service Account](images/gcp-service-account.PNG)
 
 ---
 
@@ -65,7 +65,7 @@ tar zxvf vsts-agent-linux-x64-4.260.0.tar.gz
 ./svc.sh install
 ./svc.sh start
 ```
-![Azure DevOps Agent](images/ado-agent.png)
+![Azure DevOps Agent](images/ado-agent.PNG)
 
 > After this, your Azure DevOps pipelines can target the cluster through this agent.
 
@@ -77,7 +77,7 @@ The **`main`** branch contains:
 - `Dockerfile`
 - `azure-pipelines.yml`
 - Kubernetes manifests (`k8s/`)
-![Main Branch Files](images/main-branch.png)
+![Main Branch Files](images/main-branch.PNG)
 
 ---
 
@@ -90,7 +90,7 @@ Create a **GCR** repository to push Docker images from the pipeline.
 Create **Service Connections** in Azure DevOps for:
 - **GCR** (push images)
 - **GKE** (deploy to cluster)
-![ADO Service Connections](images/ado-service-connections.png)
+![ADO Service Connections](images/ado-service-connections.PNG)
 
 ---
 
@@ -109,7 +109,7 @@ kubectl -n ingress-nginx get svc ingress-nginx-controller
 
 ### 11) Run the Pipeline
 Trigger the Azure DevOps pipeline to build, push, and deploy. The app will be deployed into the **`microservice`** namespace.  
-![ADO Pipeline](images/ado-pipeline.png)
+![ADO Pipeline](images/ado-pipeline.PNG)
 
 ---
 
@@ -117,7 +117,7 @@ Trigger the Azure DevOps pipeline to build, push, and deploy. The app will be de
 Access the application through the ingress and verify:
 - `/products`
 - `/users`
-![App Endpoints](images/app-endpoints.png)
+![App Endpoints](images/app-endpoints.PNG)
 
 ---
 
@@ -189,7 +189,7 @@ kubectl -n monitoring get secret kps-grafana \
 kubectl -n monitoring get secret kps-grafana \
   -o jsonpath='{.data.admin-password}' | base64 -d; echo
 ```
-![Grafana Login](images/grafana-login.png)
+![Grafana Login](images/grafana-login.PNG)
 
 ---
 
@@ -204,6 +204,6 @@ kubectl -n monitoring get secret kps-grafana \
 ## 📊 Architecture Diagram
 
 
-![Architecture Diagram](./images/architecture.png)
+![Architecture Diagram](./images/architecture.PNG)
 
 
