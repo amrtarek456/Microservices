@@ -203,20 +203,7 @@ kubectl -n monitoring get secret kps-grafana \
 
 ## 📊 Architecture Diagram
 
-```mermaid
-flowchart LR
-    A[GitHub Repo] -->|Fork & Branch| B[Terraform]
-    B -->|Provision Infra| C[GCP GKE Cluster]
-    C --> D[Bastion VM]
-    D -->|ADO Agent| E[Azure DevOps Pipelines]
-    E -->|Build & Push| F[GCP Container Registry]
-    E -->|Deploy| C
-    C -->|Ingress| G[NGINX LoadBalancer]
-    G -->|Expose Services| H[Application Endpoints (/products, /users)]
-    C --> I[Prometheus + Grafana]
-    I -->|Monitoring| J[Dashboards & Alerts]
-```
 
-![Architecture Diagram](images/architecture.png)
+![Architecture Diagram](./images/architecture.png)
 
 
